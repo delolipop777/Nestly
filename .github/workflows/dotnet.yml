@@ -1,0 +1,24 @@
+name: Nestly Build Pipeline
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+    - name: Checking Out Code
+      uses: actions/checkout@v4
+    - name: Setting Up .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.412
+    - name: Restoring NuGet Packages
+      run: dotnet restore
+    - name: Building the Project
+      run: dotnet build --no-restore
+    - name: Running Unit Tests
+      run: dotnet test --no-build --verbosity normal
